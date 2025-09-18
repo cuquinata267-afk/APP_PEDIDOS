@@ -7,19 +7,28 @@ namespace PEDIDOSAPP.Models
     {
         public int Id { get; set; }
 
-        [Required, StringLength(150)]
+        [Required]
+        [StringLength(200)]
         public string Name { get; set; }
 
-        [StringLength(2000)]
-        public string Description { get; set; }
+        [StringLength(1000)]
+        public string Descripcion { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser positivo.")]
-        public decimal Price { get; set; }
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser mayor a 0")]
+        public decimal Precio { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Stock no puede ser negativo.")]
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo")]
         public int Stock { get; set; }
 
-        public ICollection<OrderItem> OrderItems { get; set; }
+        [StringLength(100)]
+        public string Categoria { get; set; }
+
+        public bool EstaActivo { get; set; } = true;
+        public DateTime Crea { get; set; } = DateTime.Now;
+
+        // Navegación
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
