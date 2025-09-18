@@ -10,17 +10,31 @@ namespace PEDIDOSAPP.Models
         public int Id { get; set; }
 
         [Required]
-        public string UserId { get; set; }      // FK a ApplicationUser.Id
-        public ApplicationUser User { get; set; }
+        public string UserId { get; set; }
 
-        public DateTime Date { get; set; } = DateTime.UtcNow;
+        [Required]
+        public DateTime FechaPedido { get; set; } = DateTime.Now;
 
-        [Required, StringLength(50)]
-        public string Status { get; set; } = "Pendiente";
+        [Required]
+        public OrderStatus Estado { get; set; } = OrderStatus.Pendiente;
 
-        [Column(TypeName = "decimal(18,2)")]
+        [Range(0, double.MaxValue)]
         public decimal Total { get; set; }
 
-        public ICollection<OrderItem> Items { get; set; }
+        [StringLength(500)]
+        public string Notas { get; set; }
+
+        // Navegación
+        public virtual User User { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    }
+
+    public enum OrderStatus
+    {
+        Pendiente,
+        Procesado,
+        Enviado,
+        Entregado,
+        Cancelado
     }
 }
